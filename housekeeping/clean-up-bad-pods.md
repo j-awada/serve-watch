@@ -2,6 +2,8 @@
 
 ```Bash
 kubectl -n $SERVE_NS get po --field-selector=status.phase!=Running
+#OR
+kubectl -n $SERVE_NS get po | grep -v Running
 #NAME                                                             READY   #STATUS                   RESTARTS   AGE
 #pod-1-error                                          0/1     #Error                    0          18d
 #pod-1-healthy   0/1     Completed                0          19d
@@ -16,7 +18,7 @@ kubectl -n $SERVE_NS describe po $BAD_POD
 kubectl -n $SERVE_NS logs $BAD_POD
 ```
 
-The pod can have several types of parent objects, follow the procedure based on the parent type:
+The pod can have several types of parent objects or it can be orphaned. Follow the procedure based on the parent type:
 
 ### Bad pod with `Deployment` as parent
 
@@ -112,4 +114,14 @@ The job has been running for 19 days.
 
 ```Bash
 kubectl -n $SERVE_NS delete job $BAD_JOB
+```
+
+### Bad pod with no parent object
+
+`sp-` pods are a common example of orphaned ShinyProxy pods and are created when a user tries to access a ShinyProxy app. A problematic `sp-` pods would have failed to get properly cleaned.
+
+If the problematic `sp-` pod has a `CrashLoopBackOff` status, you can simply delete the pod:
+
+```Bash
+kubectl -n $SERVE_NS delete po $BAD_POD
 ```
