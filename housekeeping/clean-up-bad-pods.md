@@ -116,6 +116,19 @@ The job has been running for 19 days.
 kubectl -n $SERVE_NS delete job $BAD_JOB
 ```
 
+The job can also be provisioning a MinIO bucket in which case the job status would still be `Running` and the pods would be erroring out.
+
+```Bash
+kubectl -n $SERVE_NS get jobs
+NAME                                 STATUS     COMPLETIONS   DURATION   AGE
+job-ok   Complete   1/1           81s        377d
+job-not-ok-1-minio-provisioning         Running    0/1           22h        22h
+job-not-ok-2-minio-provisioning         Running    0/1           24h        24h
+```
+
+You can check if the release label has any resources left but most likely the user has moved on and deployed another app, which means you can delete the hung jobs which will clear out the bad pods.
+
+
 ### Bad pod with no parent object
 
 `sp-` pods are a common example of orphaned ShinyProxy pods and are created when a user tries to access a ShinyProxy app. A problematic `sp-` pods would have failed to get properly cleaned.
