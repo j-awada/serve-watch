@@ -26,7 +26,7 @@ watch kubectl top -n serve-dev pods -l app=studio-app --containers
 ```
 
 <div align="center">
-    <img src="./images/kubectl-top.png" alt="CodePipeline" width="500" />
+    <img src="./images/kubectl-top.png" alt="CodePipeline" width="80%" />
 </div>
 
 ### Realtime view using `k9s`
@@ -49,5 +49,5 @@ k9s -n serve-dev
 3. Narrow down your view to a specific pod. With the session open, type: `/app=studio-app`
 
 <div align="center">
-    <img src="./images/k9s.png" alt="CodePipeline" width="500" />
+    <img src="./images/k9s.png" alt="CodePipeline" width="80%" />
 </div>
