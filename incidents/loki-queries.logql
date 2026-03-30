@@ -1,0 +1,24 @@
+# Look for error text in logs
+{namespace="serve-prod", pod=~".*studio.*"} |= "error"
+
+# Look for error text in specific pod
+{namespace="serve-prod", pod=~"serve-pod-123456-jgnld"} |= "error"
+
+# Count all requests using pod labels in a 5-min window
+count_over_time({web="my-web"}[5m])
+
+# Get requests in a JSON format
+{web="my-web"} | json
+
+# Get a visual of the IPs that have sent the most requests
+sum by (client_ip) (
+  count_over_time(
+    {container=~"my-ingress-controller"}
+    | regexp "(?P<client_ip>\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})"
+    | label_format client_ip="{{.client_ip}}"
+    [5m]
+  )
+)
+
+# Check what an IP was requesting
+{container=~"rke2-ingress-nginx-controller"} |~ "185\\.177\\.72\\.52"
