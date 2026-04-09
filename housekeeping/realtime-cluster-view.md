@@ -46,8 +46,14 @@ brew install derailed/k9s/k9s
 k9s -n serve-dev
 ```
 
-3. Narrow down your view to a specific pod. With the session open, type: `/app=studio-app`
+3. Narrow down your view to a specific pod. With the session open, type: `/app=studio-app` and press enter.
 
 <div align="center">
     <img src="./images/k9s.png" alt="CodePipeline" width="80%" />
 </div>
+
+4. View a pod description by navigating to the pod and pressing `d`.
+
+5. Press `y` to view the pod's YAML. For example to check the Celery pod memory usage, look for `resources.limits.memory`. Memory usage is high but within limits.
+
+6. View a pod's log by pressing `l`.
