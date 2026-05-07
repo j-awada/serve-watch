@@ -138,3 +138,31 @@ If the problematic `sp-` pod has a `CrashLoopBackOff` status, you can simply del
 ```Bash
 kubectl -n $SERVE_NS delete po $BAD_POD
 ```
+
+But sometimes deleting the `sp-` pod does not help and another `sp-` pod gets created soon after. If the pod has an `ImagePullBackOff` status or if it keeps getting recreated even after you delete it, look for a hung Helm release:
+
+2. Grep for a  Helm release
+
+```Bash
+helm list -n $SERVE_NS | grep shiny
+# ...
+#bad-shinyproxy             serve-staging   1               2024-10-04 15:09:58.347774221 +0000 UTC         uninstalling     shinyproxy-1.4.1        0.1
+# ...
+```
+
+3. Get resources that have the release label `bad-shinyproxy`
+
+```Bash
+kubectl -n $SERVE_NS get jobs -l "app.kubernetes.io/instance=bad-shinyproxy"
+#NAME                                   STATUS    COMPLETIONS   DURATION   AGE
+#delete-user-pods-bad-shinyproxy   Running   0/1           154m       154m
+```
+
+The command above gets a job resource but you might want to get all resources having this label.
+
+4. Delete all those stuck resources.
+
+```Bash
+kubectl -n $SERVE_NS delete job delete-user-pods-bad-shinyproxy
+kubectl -n $SERVE_NS delete secret sh.helm.release.v1.bad-shinyproxy.v1
+```
