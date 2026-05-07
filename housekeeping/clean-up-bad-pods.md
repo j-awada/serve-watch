@@ -120,10 +120,10 @@ The job can also be provisioning a MinIO bucket in which case the job status wou
 
 ```Bash
 kubectl -n $SERVE_NS get jobs
-NAME                                 STATUS     COMPLETIONS   DURATION   AGE
-job-ok   Complete   1/1           81s        377d
-job-not-ok-1-minio-provisioning         Running    0/1           22h        22h
-job-not-ok-2-minio-provisioning         Running    0/1           24h        24h
+#NAME                                 STATUS     COMPLETIONS   DURATION   AGE
+#job-ok   Complete   1/1           81s        377d
+#job-not-ok-1-minio-provisioning         Running    0/1           22h        22h
+#job-not-ok-2-minio-provisioning         Running    0/1           24h        24h
 ```
 
 You can check if the release label has any resources left but most likely the user has moved on and deployed another app, which means you can delete the hung jobs which will clear out the bad pods.
@@ -146,7 +146,7 @@ But sometimes deleting the `sp-` pod does not help and another `sp-` pod gets cr
 ```Bash
 helm list -n $SERVE_NS | grep shiny
 # ...
-#bad-shinyproxy             serve-staging   1               2024-10-04 15:09:58.347774221 +0000 UTC         uninstalling     shinyproxy-1.4.1        0.1
+#bad-shinyproxy             serve-ns   1               2024-10-04 15:09:58.347774221 +0000 UTC         uninstalling     shinyproxy-1.4.1        0.1
 # ...
 ```
 
